@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.font-pixel {
+    font-family: 'Press Start 2P', monospace;
+}
+
+.image-rendering-pixelated {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges; /* Fallback for older browsers */
+}
+
+/* Make sure the game wrapper acts as a frame */
+#game-wrapper {
+    border-radius: 8px;
+}
+
+/* HUD adjustments */
+#hud {
+    pointer-events: none;
+}
+
+/* Help prevent text selection on mobile */
+* {
+    -webkit-touch-callout: none;
+}
