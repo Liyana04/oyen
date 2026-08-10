@@ -24,7 +24,6 @@ let catColor = 'orange';
 let playerName = 'Player';
 let speed = 1.8;
 let frameCount = 0;
-let paused = false;
 
 // --- ASSETS ---
 const catOrangeImg = new Image();
@@ -45,10 +44,19 @@ groundImg.src = 'images/land.png';
 
 const obstacleImages = [
     new Image(),
+    new Image(),
+    new Image(),
     new Image()
 ];
 obstacleImages[0].src = 'images/obstacle1.png';
 obstacleImages[1].src = 'images/obstacle2.png';
+obstacleImages[2].src = 'images/awan1.png';
+obstacleImages[3].src = 'images/awan2.png';
+
+function isVisualObstacle(img) {
+    return img === obstacleImages[2] || img === obstacleImages[3];
+}
+
 
 // --- GAME OBJECTS ---
 const player = {
@@ -79,7 +87,7 @@ function rectCollide(r1, r2) {
 
 // --- MAIN GAME LOGIC ---
 function update() {
-    if (gameState !== 'playing' || paused) return;
+    if (gameState !== 'playing') return;
     frameCount++;
 
     if (keys.left) player.x -= 2.6;
@@ -141,12 +149,16 @@ function update() {
         }
 
         if (Math.random() < 0.4) {
+            const obstacleImg = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
+            const obstacleH = isVisualObstacle(obstacleImg) ? 28 : 40;
+            const obstacleY = isVisualObstacle(obstacleImg) ? 60 + Math.random() * 70 : GROUND_Y - obstacleH;
+
             obstacles.push({
                 x: W + 20,
-                y: GROUND_Y - 40,
-                w: 32,
-                h: 40,
-                img: obstacleImages[Math.floor(Math.random() * obstacleImages.length)]
+                y: obstacleY,
+                w: isVisualObstacle(obstacleImg) ? 48 : 32,
+                h: obstacleH,
+                img: obstacleImg
             });
         }
     }
@@ -169,6 +181,10 @@ function update() {
             h: player.h - safeMargin * 2
         };
 
+        if (isVisualObstacle(obs.img)) {
+            continue;
+        }
+
         if (rectCollide(playerBox, obs)) {
             gameState = 'gameover';
             gameoverScreen.classList.remove('hidden');
@@ -179,7 +195,7 @@ function update() {
     for (let i = foods.length - 1; i >= 0; i--) {
         const f = foods[i];
         if (rectCollide(player, f)) {
-            score += 10;
+            score += 5;
             scoreDisplay.textContent = score;
 
             floatingTexts.push({
@@ -284,7 +300,6 @@ function startGame() {
     hudEl.classList.remove('hidden');
     score = 0;
     scoreDisplay.textContent = '0';
-    paused = false;
     gameState = 'playing';
     player.x = 100;
     player.y = GROUND_Y - player.h;
@@ -293,22 +308,11 @@ function startGame() {
     floatingTexts = [];
 }
 
-function togglePause() {
-    if (gameState !== 'playing') return;
-    paused = !paused;
-
-    const pauseButton = document.querySelector('#hud button:first-of-type');
-    if (pauseButton) {
-        pauseButton.textContent = paused ? 'RESUME' : 'PAUSE';
-    }
-}
-
 function restartGame() {
     gameoverScreen.classList.add('hidden');
     winScreen.classList.add('hidden');
     hudEl.classList.add('hidden');
     menuScreen.classList.remove('hidden');
-    paused = false;
     gameState = 'menu';
     score = 0;
     scoreDisplay.textContent = '0';

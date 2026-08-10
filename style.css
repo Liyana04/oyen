@@ -9,14 +9,71 @@
     image-rendering: crisp-edges; /* Fallback for older browsers */
 }
 
-/* Make sure the game wrapper acts as a frame */
-#game-wrapper {
-    border-radius: 8px;
+body {
+    padding: 1rem;
+    box-sizing: border-box;
 }
 
-/* HUD adjustments */
+#game-wrapper {
+    border-radius: 8px;
+    width: min(100%, 1000px);
+    max-width: 100%;
+    max-height: calc(100dvh - 2rem);
+    aspect-ratio: 2 / 1;
+}
+
+#gameCanvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#menu-screen,
+#gameover-screen,
+#win-screen {
+    font-size: clamp(0.75rem, 1.8vw, 1rem);
+}
+
+#menu-screen > div,
+#gameover-screen,
+#win-screen {
+    width: min(92%, 28rem);
+    padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+#menu-screen button,
+#gameover-screen button,
+#win-screen button {
+    font-size: clamp(0.7rem, 1.8vw, 0.95rem);
+    padding: clamp(0.7rem, 2vw, 1rem) clamp(1rem, 3vw, 1.4rem);
+}
+
 #hud {
     pointer-events: none;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: clamp(0.6rem, 1.6vw, 0.8rem);
+    padding: clamp(0.35rem, 1.2vw, 0.6rem) clamp(0.6rem, 1.8vw, 0.8rem);
+}
+
+#menu-screen input {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 0.6rem;
+    }
+
+    #game-wrapper {
+        border-width: 4px;
+        max-height: calc(100dvh - 1.2rem);
+    }
+
+    #hud {
+        top: 0.35rem;
+        right: 0.35rem;
+    }
 }
 
 /* Help prevent text selection on mobile */
