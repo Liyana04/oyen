@@ -192,7 +192,7 @@ function update() {
 
             foods.splice(i, 1);
 
-            if (score >= 20) {
+            if (score >= 69) {
                 gameState = 'win';
                 winScreen.classList.remove('hidden');
                 hudEl.classList.add('hidden');
