@@ -16,7 +16,7 @@ const winScreen = document.getElementById('win-screen');
 const hudEl = document.getElementById('hud');
 const scoreDisplay = document.getElementById('score-display');
 const nameDisplay = document.getElementById('player-name-display');
-const nameInput = document.getElementById('player-name');
+// const nameInput = document.getElementById('player-name');
 
 // --- GAME STATE ---
 let gameState = 'menu';
@@ -313,13 +313,20 @@ function selectCat(color) {
     catColor = color;
     catImg = (color === 'orange') ? catOrangeImg : catGreyImg;
 
+    // Automatically set the display name to the selected cat's name
+    playerName = (color === 'orange') ? 'Oyen' : 'Onyet';
+
     document.getElementById('cat-orange-btn').style.borderColor = 'transparent';
     document.getElementById('cat-grey-btn').style.borderColor = 'transparent';
     document.getElementById('cat-' + color + '-btn').style.borderColor = '#fbbf24';
 }
 
 function startGame() {
-    playerName = nameInput.value.trim() || 'Oyen';
+    // If the player clicks start without selecting first, default to 'Oyen'
+    if (!playerName) {
+        playerName = 'Oyen';
+    }
+
     nameDisplay.textContent = playerName;
 
     menuScreen.classList.add('hidden');
@@ -342,7 +349,7 @@ function restartGame() {
     gameState = 'menu';
     score = 0;
     scoreDisplay.textContent = '0';
-    nameInput.value = '';
+    // nameInput.value = '';
     nameDisplay.textContent = '';
     player.x = 60;
     player.y = GROUND_Y - player.h;
