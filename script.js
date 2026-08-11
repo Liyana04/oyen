@@ -221,20 +221,20 @@ function update() {
     for (let i = foods.length - 1; i >= 0; i--) {
         const f = foods[i];
         if (rectCollide(player, f)) {
-            score += 100;
+            score += 3;
             scoreDisplay.textContent = score;
 
             floatingTexts.push({
                 x: f.x,
                 y: f.y - 10,
-                text: '+100',
+                text: '+3',
                 life: 45,
                 maxLife: 45
             });
 
             foods.splice(i, 1);
 
-            if (score >= 1957) {
+            if (score >= 69) {
                 gameState = 'win';
                 winScreen.classList.remove('hidden');
                 hudEl.classList.add('hidden');
