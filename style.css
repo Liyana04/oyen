@@ -6,19 +6,20 @@
 
 .image-rendering-pixelated {
     image-rendering: pixelated;
-    image-rendering: crisp-edges; /* Fallback for older browsers */
+    image-rendering: crisp-edges;
 }
 
 body {
-    padding: 1rem;
+    padding: 0.75rem;
     box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 #game-wrapper {
     border-radius: 8px;
     width: min(100%, 1000px);
     max-width: 100%;
-    max-height: calc(100dvh - 2rem);
+    max-height: calc(100dvh - 1.5rem);
     aspect-ratio: 2 / 1;
 }
 
@@ -26,19 +27,24 @@ body {
     display: block;
     width: 100%;
     height: 100%;
+    touch-action: none;
 }
 
 #menu-screen,
 #gameover-screen,
 #win-screen {
+    width: 100%;
+    height: 100%;
     font-size: clamp(0.75rem, 1.8vw, 1rem);
+    padding: 0.75rem;
+    overflow-y: auto;
 }
 
-#menu-screen > div,
-#gameover-screen,
-#win-screen {
+#menu-screen > div {
     width: min(92%, 28rem);
-    padding: clamp(1rem, 3vw, 1.5rem);
+    padding: clamp(0.9rem, 2.6vw, 1.3rem);
+    max-height: min(90%, 32rem);
+    overflow-y: auto;
 }
 
 #menu-screen button,
@@ -56,6 +62,13 @@ body {
     padding: clamp(0.35rem, 1.2vw, 0.6rem) clamp(0.6rem, 1.8vw, 0.8rem);
 }
 
+#menu-screen input,
+#menu-screen button,
+#gameover-screen button,
+#win-screen button {
+    touch-action: manipulation;
+}
+
 #menu-screen input {
     font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
@@ -67,6 +80,7 @@ body {
 
     #game-wrapper {
         border-width: 4px;
+        aspect-ratio: 4 / 7;
         max-height: calc(100dvh - 1.2rem);
     }
 
@@ -76,7 +90,6 @@ body {
     }
 }
 
-/* Help prevent text selection on mobile */
 * {
     -webkit-touch-callout: none;
 }

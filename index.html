@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="script.css">
 </head>
-<body class="bg-[#a0d2eb] flex justify-center items-center min-h-screen touch-none select-none">
-    <div id="game-wrapper" class="relative w-full max-w-5xl mx-auto aspect-[2/1] bg-sky-300 overflow-hidden shadow-2xl border-8 border-[#2d2d2d] image-rendering-pixelated">
+<body class="bg-[#a0d2eb] flex justify-center items-center min-h-screen touch-manipulation select-none">
+    <div id="game-wrapper" class="relative w-full max-w-5xl mx-auto h-[85vh] sm:h-auto sm:aspect-[2/1] bg-sky-300 overflow-hidden shadow-2xl border-4 sm:border-8 border-[#2d2d2d] image-rendering-pixelated rounded-lg sm:rounded-none">
         
         <!-- The Game Canvas -->
         <canvas id="gameCanvas" width="800" height="400" class="w-full h-full block bg-sky-300"></canvas>
 
         <!-- MENU SCREEN (Journey step 2) -->
         <div id="menu-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-[#2B3856]/80 backdrop-blur-sm z-20 font-pixel text-white">
-            <div class="bg-[#2B3856] p-6 rounded-xl border-4 border-gray-400 flex flex-col items-center gap-4 w-[90%] max-w-sm text-center shadow-[inset_0_0_20px_rgba(255,255,255,0.1)]">
+                <div class="bg-[#2B3856] p-4 sm:p-6 rounded-xl border-4 border-gray-400 flex flex-col items-center gap-3 sm:gap-4 w-[92%] max-w-sm max-h-[100%] overflow-y-auto text-center shadow-[inset_0_0_20px_rgba(255,255,255,0.1)]">
                 <div class="bg-white text-[#2B3856] font-bold px-4 py-1 rounded w-full">Oyen Adventure</div>
                 <input id="player-name" type="text" maxlength="10" class="bg-transparent border-b-2 border-white text-center text-lg outline-none w-full placeholder-gray-400 text-white transition-colors focus:border-yellow-300" placeholder="My Name">
                 
@@ -43,8 +43,8 @@
         </div>
 
         <!-- GAME OVER SCREEN (Journey step 7 & 6) -->
-        <div id="gameover-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-20 hidden font-pixel text-white">
-            <h1 class="text-4xl text-red-500 font-bold mb-6 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]">GAME OVER</h1>
+        <div id="gameover-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-20 hidden font-pixel text-white text-center p-4">
+            <h1 class="text-3xl sm:text-4xl text-red-500 font-bold mb-6 drop-shadow-[0_0_15px_rgba(255,0,0,0.5)]">GAME OVER</h1>
             <div class="flex gap-4">
                 <button onclick="restartGame()" class="bg-white text-black px-6 py-3 hover:bg-gray-200 active:scale-95 shadow-md rounded">REPLAY</button>
                 <button onclick="window.open('https://www.linkedin.com/in/nur-liyana-aris/','_blank')" class="bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 active:scale-95 shadow-md rounded">LINKEDIN</button>

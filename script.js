@@ -2,9 +2,10 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const W = 800;
-const H = 400;
-const GROUND_Y = 330;
+// Dynamic dimensions
+let W = 800;
+let H = 400;
+let GROUND_Y = 330;
 const PLAYER_WIDTH = 32;
 const PLAYER_HEIGHT = 32;
 
@@ -57,10 +58,9 @@ function isVisualObstacle(img) {
     return img === obstacleImages[2] || img === obstacleImages[3];
 }
 
-
 // --- GAME OBJECTS ---
 const player = {
-    x: 100,
+    x: 60,
     y: GROUND_Y - PLAYER_HEIGHT,
     w: PLAYER_WIDTH,
     h: PLAYER_HEIGHT,
@@ -75,6 +75,32 @@ const player = {
 let foods = [];
 let obstacles = [];
 let floatingTexts = [];
+
+// --- RESIZE LOGIC (Placed after variable declarations) ---
+function resizeCanvas() {
+    const isMobile = window.innerWidth <= 640;
+
+    if (isMobile) {
+        W = 400;
+        H = 700;
+        GROUND_Y = 620;
+    } else {
+        W = 800;
+        H = 400;
+        GROUND_Y = 330;
+    }
+
+    canvas.width = W;
+    canvas.height = H;
+
+    if (player && player.onGround) {
+        player.y = GROUND_Y - player.h;
+    }
+}
+
+// Initialize canvas resolution
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
 
 // --- INPUT ---
 const keys = { left: false, right: false, jump: false };
@@ -124,7 +150,7 @@ function update() {
             const randomFood = foodImages[Math.floor(Math.random() * foodImages.length)];
             const foodW = 32;
             const foodH = 32;
-            const yPos = GROUND_Y - foodH - Math.random() * 60;
+            const yPos = GROUND_Y - foodH - Math.random() * 80;
             const proposedFood = {
                 x: W + 20,
                 y: yPos,
@@ -151,7 +177,7 @@ function update() {
         if (Math.random() < 0.4) {
             const obstacleImg = obstacleImages[Math.floor(Math.random() * obstacleImages.length)];
             const obstacleH = isVisualObstacle(obstacleImg) ? 28 : 40;
-            const obstacleY = isVisualObstacle(obstacleImg) ? 60 + Math.random() * 70 : GROUND_Y - obstacleH;
+            const obstacleY = isVisualObstacle(obstacleImg) ? 60 + Math.random() * 120 : GROUND_Y - obstacleH;
 
             obstacles.push({
                 x: W + 20,
@@ -301,7 +327,7 @@ function startGame() {
     score = 0;
     scoreDisplay.textContent = '0';
     gameState = 'playing';
-    player.x = 100;
+    player.x = 60;
     player.y = GROUND_Y - player.h;
     foods = [];
     obstacles = [];
@@ -318,7 +344,7 @@ function restartGame() {
     scoreDisplay.textContent = '0';
     nameInput.value = '';
     nameDisplay.textContent = '';
-    player.x = 100;
+    player.x = 60;
     player.y = GROUND_Y - player.h;
     player.vy = 0;
     player.onGround = true;
