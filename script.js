@@ -379,22 +379,41 @@ function getTouchPos(e) {
 }
 
 document.addEventListener('touchstart', (e) => {
-    if (gameState !== 'playing') return;
+    if (gameState !== 'playing') return; // Allow default scrolling/refresh when in menu screens
+    
     const { x, y } = getTouchPos(e);
-    keys.left = x < W / 3;
-    keys.right = x > (W / 3) * 2;
-    keys.jump = y < H / 3;
+
+    // Jump when tapping anywhere above the ground
+    keys.jump = y < GROUND_Y;
+
+    // Movement controls split left/right below the ground
+    keys.left = x < W / 2 && y >= GROUND_Y;
+    keys.right = x >= W / 2 && y >= GROUND_Y;
+
+    // Only prevent default touch behavior if the user is tapping inside the active game canvas area
+    // and not attempting a top-of-page downward pull gesture
+    if (window.scrollY === 0 && e.touches[0].clientY < 50 && !keys.jump) {
+        // Let native pull-to-refresh happen when pulling from the top edge
+        return;
+    }
+
     e.preventDefault();
-});
+}, { passive: false });
 
 document.addEventListener('touchmove', (e) => {
     if (gameState !== 'playing') return;
+
     const { x, y } = getTouchPos(e);
-    keys.left = x < W / 3;
-    keys.right = x > (W / 3) * 2;
-    keys.jump = y < H / 3;
-    e.preventDefault();
-});
+
+    keys.jump = y < GROUND_Y;
+    keys.left = x < W / 2 && y >= GROUND_Y;
+    keys.right = x >= W / 2 && y >= GROUND_Y;
+
+    // Prevent scrolling while actively playing/controlling the game
+    if (e.cancelable) {
+        e.preventDefault();
+    }
+}, { passive: false });
 
 document.addEventListener('touchend', () => {
     keys.left = false;
