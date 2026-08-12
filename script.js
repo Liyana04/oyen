@@ -351,6 +351,17 @@ function restartGame() {
     scoreDisplay.textContent = '0';
     // nameInput.value = '';
     nameDisplay.textContent = '';
+
+    // --- RESET SELECTION STATE ---
+    catColor = null;
+    playerName = null;
+
+    // --- REMOVE SELECTION BORDER HIGHLIGHTS ---
+    const orangeBtn = document.getElementById('cat-orange-btn');
+    const greyBtn = document.getElementById('cat-grey-btn');
+    if (orangeBtn) orangeBtn.style.borderColor = 'transparent';
+    if (greyBtn) greyBtn.style.borderColor = 'transparent';
+    
     player.x = 60;
     player.y = GROUND_Y - player.h;
     player.vy = 0;
