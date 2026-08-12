@@ -238,6 +238,14 @@ function update() {
                 gameState = 'win';
                 winScreen.classList.remove('hidden');
                 hudEl.classList.add('hidden');
+
+                // --- PUSH WIN EVENT TO GTM ---
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'game_win',
+                    'winning_character': playerName // Sends 'Oyen' or 'Onyet'
+                });
+
                 return;
             }
         }
@@ -361,7 +369,7 @@ function restartGame() {
     const greyBtn = document.getElementById('cat-grey-btn');
     if (orangeBtn) orangeBtn.style.borderColor = 'transparent';
     if (greyBtn) greyBtn.style.borderColor = 'transparent';
-    
+
     player.x = 60;
     player.y = GROUND_Y - player.h;
     player.vy = 0;
