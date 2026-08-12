@@ -40,11 +40,13 @@ body {
     overflow-y: auto;
 }
 
-#menu-screen > div {
+#menu-screen > div,
+#win-screen > div {
     width: min(92%, 28rem);
     padding: clamp(0.9rem, 2.6vw, 1.3rem);
     max-height: min(90%, 32rem);
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 #menu-screen button,
@@ -92,4 +94,21 @@ body {
 
 * {
     -webkit-touch-callout: none;
+}
+
+/* Win screen title scaling */
+#win-screen h1,
+#win-screen h2,
+#win-screen .text-yellow-300 {
+    font-size: clamp(0.85rem, 3.5vw, 1.5rem);
+    line-height: 1.4;
+    word-break: break-word;
+    text-align: center;
+}
+
+/* Ensure buttons & links wrap neatly on narrow screens */
+#win-screen .flex {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
 }
