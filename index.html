@@ -60,9 +60,14 @@
         </div>
 
         <!-- HUD (Journey step 3) -->
-        <div id="hud" class="absolute top-3 right-3 z-30 font-pixel text-xs hidden px-4 py-2 rounded-lg bg-white/95 border-2 border-[#2B3856] shadow-lg flex items-center gap-3 pointer-events-auto">
-            <span id="player-name-display" class="text-[#2B3856]"></span>
-            <span id="score-display" class="text-[#2B3856] font-bold">0</span>
+        <div class="absolute top-3 right-3 z-30 flex items-center gap-2">
+            <div id="hud" class="top-3 right-3 z-30 font-pixel text-xs hidden px-4 py-2 rounded-lg bg-white/95 border-2 border-[#2B3856] shadow-lg flex items-center gap-3 pointer-events-auto">
+                <span id="player-name-display" class="text-[#2B3856]"></span>
+                <span id="score-display" class="text-[#2B3856] font-bold">0</span>
+            </div>
+            <div class="flex items-center gap-2">
+             <button id="mute-btn" onclick="toggleMute()" class="pointer-events-auto bg-black/50 hover:bg-black/70 text-base p-1.5 rounded transition">🔊</button>
+            </div>
         </div>
 
         <!-- GAME OVER SCREEN (Journey step 7 & 6) -->
@@ -74,17 +79,23 @@
             </div>
         </div>
 
-        <!-- WIN SCREEN (Journey step 6) -->
+<!-- WIN SCREEN (Journey step 6) -->
         <div id="win-screen" class="absolute inset-0 flex flex-col items-center justify-center bg-green-900/90 backdrop-blur-sm z-20 hidden font-pixel text-white">
-            <h1 class="text-3xl text-yellow-300 font-bold mb-2 drop-shadow-[0_0_10px_rgba(255,255,0,0.6)]">CONGRATULATIONS!</h1>
-            <div class="flex items-center justify-center gap-4 mb-6">
-                <img src="images/oyen.png" class="w-16 h-auto object-contain border-2 border-transparent rounded hover:border-yellow-400 transition" id="cat-orange-btn">
-                <h2 class="text-2xl">YOU WIN!</h2>
-                <img src="images/oyem.png" class="w-16 h-auto object-contain border-2 border-transparent rounded hover:border-yellow-400 transition" id="cat-grey-btn">
-            </div>
-            <div class="flex gap-4">
-                <button onclick="restartGame()" class="bg-white text-black px-6 py-3 hover:bg-gray-200 active:scale-95 shadow-md rounded">REPLAY</button>
-                <button onclick="window.open('https://www.linkedin.com/in/nur-liyana-aris/','_blank')" class="bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 active:scale-95 shadow-md rounded">LINKEDIN</button>
+            <!-- INNER WRAPPER CARD -->
+            <div class="bg-[#1b4332] p-4 sm:p-6 rounded-xl border-4 border-gray-400 flex flex-col items-center gap-3 sm:gap-4 shadow-[inset_0_0_20px_rgba(255,255,255,0.1)]">
+                <h1 class="text-yellow-300 font-bold drop-shadow-[0_0_10px_rgba(255,255,0,0.6)]">CONGRATULATIONS!</h1>
+                
+                <!-- CATS + TEXT ROW WITH character-preview CLASS -->
+                <div class="character-preview my-2">
+                    <img src="images/oyen.png" class="w-12 h-auto object-contain">
+                    <span class="text-xl">YOU WIN!</span>
+                    <img src="images/oyem.png" class="w-12 h-auto object-contain">
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="restartGame()" class="bg-white text-black hover:bg-gray-200 active:scale-95 shadow-md rounded">REPLAY</button>
+                    <button onclick="window.open('https://www.linkedin.com/in/nur-liyana-aris/','_blank')" class="bg-blue-600 text-white hover:bg-blue-700 active:scale-95 shadow-md rounded">LINKEDIN</button>
+                </div>
             </div>
         </div>
         

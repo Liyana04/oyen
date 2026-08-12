@@ -1,3 +1,112 @@
+// --- AUDIO INITIALIZATION ---
+let audioCtx;
+let isMuted = false;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+// Toggle Mute Function
+function toggleMute() {
+    isMuted = !isMuted;
+    const muteBtn = document.getElementById('mute-btn');
+    if (muteBtn) {
+        muteBtn.textContent = isMuted ? '🔇' : '🔊';
+    }
+}
+
+// Food Collect Sound (High pitched quick chirp)
+function playFoodSFX() {
+    if (isMuted) return;
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+}
+
+// Jump Sound (Quick frequency sweep upward)
+function playJumpSFX() {
+    if (isMuted) return;
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+    
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.15);
+}
+
+// Game Over Sound (Frequency drops down)
+function playGameOverSFX() {
+    if (isMuted) return;
+    initAudio();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.5);
+    
+    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.5);
+}
+
+// Win Fanfare Sound (Triumphant double-beep)
+function playWinSFX() {
+    if (isMuted) return;
+    initAudio();
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C, E, G, High C
+    notes.forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        const startTime = audioCtx.currentTime + (index * 0.1);
+        
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, startTime);
+        
+        gain.gain.setValueAtTime(0.15, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.12);
+        
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        
+        osc.start(startTime);
+        osc.stop(startTime + 0.12);
+    });
+}
+
 // --- GAME SETUP ---
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -134,6 +243,7 @@ function update() {
     if (keys.jump && player.onGround) {
         player.vy = player.jumpPower;
         player.onGround = false;
+        playJumpSFX();
     }
 
     player.vy += player.gravity;
@@ -214,6 +324,7 @@ function update() {
         if (rectCollide(playerBox, obs)) {
             gameState = 'gameover';
             gameoverScreen.classList.remove('hidden');
+            playGameOverSFX();
             return;
         }
     }
@@ -223,6 +334,7 @@ function update() {
         if (rectCollide(player, f)) {
             score += 3;
             scoreDisplay.textContent = score;
+            playFoodSFX();
 
             floatingTexts.push({
                 x: f.x,
@@ -234,11 +346,12 @@ function update() {
 
             foods.splice(i, 1);
 
+            // total score
             if (score >= 69) {
                 gameState = 'win';
                 winScreen.classList.remove('hidden');
                 hudEl.classList.add('hidden');
-
+                playWinSFX();
                 // --- PUSH WIN EVENT TO GTM ---
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({

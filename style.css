@@ -112,3 +112,31 @@ body {
     justify-content: center;
     gap: 0.5rem;
 }
+
+/* Ensure win screen cat row stays on a single horizontal line */
+#win-screen .character-preview {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+/* Reduce and scale cat images for mobile screens */
+#win-screen .character-preview img {
+    width: clamp(1.80rem, 4.5vw, 2.3rem); /* Scaled down size */
+    height: auto;
+    flex-shrink: 0;
+}
+
+/* Reduce and scale middle text size */
+#win-screen .character-preview h2,
+#win-screen .character-preview span,
+#win-screen .character-preview p {
+    font-size: clamp(1.25rem, 1.8vw, 1.5rem); /* Smaller responsive font size */
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin: 0;
+}
