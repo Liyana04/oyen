@@ -1,6 +1,30 @@
 // --- AUDIO INITIALIZATION ---
 let audioCtx;
 let isMuted = false;
+let instructionTimer = null;
+
+// Show Instructions in Pause Mode
+function showInstructionModal() {
+    const modal = document.getElementById('instruction-modal');
+    const modalCat = document.getElementById('modal-cat-preview');
+    
+    if (modal) {
+        // Set cat sprite preview based on selected cat
+        if (modalCat) {
+            modalCat.src = (catColor === 'orange') ? 'images/oyen.png' : 'images/oyem.png';
+        }
+        modal.classList.remove('hidden');
+    }
+}
+
+// Close popup and unpause/start loop movement
+function closeInstructionModal() {
+    const modal = document.getElementById('instruction-modal');
+    if (modal && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        gameState = 'playing'; // Resume/Start gameplay motion
+    }
+}
 
 function initAudio() {
     if (!audioCtx) {
@@ -460,6 +484,9 @@ function startGame() {
     foods = [];
     obstacles = [];
     floatingTexts = [];
+
+    gameState = 'instructions'; 
+    showInstructionModal();
 }
 
 function restartGame() {
@@ -541,4 +568,31 @@ document.addEventListener('touchend', () => {
     keys.jump = false;
 });
 
+// Keypress listener (movement + modal dismissal)
+document.addEventListener('keydown', (e) => {
+    // If instruction modal is visible, close it on any key press
+    if (gameState === 'instructions') {
+        closeInstructionModal();
+        return;
+    }
+
+    if (e.key === 'ArrowLeft') keys.left = true;
+    if (e.key === 'ArrowRight') keys.right = true;
+    if (e.key === 'ArrowUp' || e.key === ' ') {
+        e.preventDefault();
+        keys.jump = true;
+    }
+});
+
+// Click / Touch listener for modal dismissal
+const instructionModalEl = document.getElementById('instruction-modal');
+if (instructionModalEl) {
+    instructionModalEl.addEventListener('click', () => {
+        if (gameState === 'instructions') {
+            closeInstructionModal();
+        }
+    });
+}
+
+// Start loop
 gameLoop();
